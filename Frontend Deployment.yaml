@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: frontend
+          image: mudashir/my-frontend-movie-app:1.0
+          env:
+            - name: API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: api_key
+          # ...
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000  # Adjust the targetPort if your React server listens on a different port
+  type: LoadBalancer  # Change to 'ClusterIP' or 'NodePort' if needed
+
+
+
