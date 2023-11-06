@@ -17,7 +17,7 @@ pipeline {
         }    
         stage('Checkout SCM') {
             steps {
-                git credentialsId: 'github', url: 'https://github.com/MudarCorp/movie-gold-v1.git', branch: 'master'
+                git credentialsId: 'github', url: 'https://github.com/MudarCorp/movie-aet-frontend.git', branch: 'master'
             }
         }
         
