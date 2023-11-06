@@ -1,8 +1,11 @@
 pipeline {
     agent any
     
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub')
+       environment {
+        DOCKERHUB_USERNAME = "mudashir"
+        APP_NAME = "MOVIE-PROJECT"
+        IMAGE_TAG = "1.0.${BUILD_NUMBER}"
+        IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}"
     }
     
     stages {

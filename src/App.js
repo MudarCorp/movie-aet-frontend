@@ -8,6 +8,7 @@ import Header from './components/header/Header';
 import Trailer from './components/trailer/Trailer';
 import Reviews from './components/reviews/Reviews';
 import NotFound from './components/notFound/NotFound';
+import axios from 'axios';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
       console.log(err);
     }
   }
-
+console.log(movies)
   const getMovieData = async (movieId) => {
      
     try 
