@@ -25,13 +25,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
+                    // Use a writable directory in the workspace
+                    def installDir = "${workspace}/nodejs"
                     // Create a directory for Node.js installation
-                    dir('/opt') {
-                        // Download and install a pre-built Node.js binary compatible with the system's GLIBC
-                        sh 'curl -fsSL https://nodejs.org/dist/v14.17.6/node-v14.17.6-linux-x64.tar.xz | tar -xJ'
-                    }
+                    sh "mkdir -p ${installDir}"
+                    // Download and install a pre-built Node.js binary compatible with the system's GLIBC
+                    sh "curl -fsSL https://nodejs.org/dist/v14.17.6/node-v14.17.6-linux-x64.tar.xz | tar -xJ -C ${installDir} --strip-components=1"
                     // Add Node.js binary directory to the PATH
-                    env.PATH = "/opt/node-v14.17.6-linux-x64/bin:${env.PATH}"
+                    env.PATH = "${installDir}/bin:${env.PATH}"
                     // Verify Node.js installation
                     sh 'node -v'
                     // Install project dependencies
