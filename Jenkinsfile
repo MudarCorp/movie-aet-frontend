@@ -10,8 +10,8 @@ pipeline {
     }
     
     tools {
-        node 'nodejs20' // Jenkins configured nodejs
-        dockerTool 'LocalDocker' // Jenkins configured Docker. Note: Docker Build Pipeline MUST be installed.
+        node 'node' // Jenkins configured nodejs
+
     }
     
     stages {
