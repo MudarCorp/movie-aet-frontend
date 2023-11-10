@@ -8,10 +8,6 @@ pipeline {
         IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}"
         REGISTRY_CREDS = 'dockerhub'
     }
-    
-    tools {
-        nodejs 'nodejs20' // Assuming 'nodejs20' is the name of your Node.js tool installation in Jenkins
-    }
 
     stages {
         stage('Clean up workspace') {
@@ -19,24 +15,43 @@ pipeline {
                 cleanWs()
             }
         }    
+
         stage('Checkout SCM') {
             steps {
                 git credentialsId: 'github', url: 'https://github.com/MudarCorp/movie-aet-frontend.git', branch: 'master'
             }
         }
-        
-        stage('Build App') {
+
+        stage('Install Dependencies') {
             steps {
                 script {
-                    // Install Node.js dependencies
+                    // Install Node.js and npm
+                    def nodejsInstallation = tool name: 'NodeJS 14', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+                    env.PATH = "${nodejsInstallation}/bin:${env.PATH}"
+                    // Install project dependencies
                     sh 'npm install'
-                    
-                    // Build the application
-                    sh 'npm run build'  // or any build command you use in your project
                 }
             }
         }
-        
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    // Run your tests
+                    sh 'npm test'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Run your build commands if needed
+                    sh 'npm run build'
+                }
+            }
+        }
+
         stage('Build Image') {
             steps {
                 script {
@@ -44,7 +59,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Push Image') {
             steps {
                 script {
@@ -55,7 +70,7 @@ pipeline {
                 }
             } 
         }
-        
+
         stage('Remove Images') {
             steps {
                 sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
