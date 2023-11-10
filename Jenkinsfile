@@ -8,10 +8,11 @@ pipeline {
         IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}"
         REGISTRY_CREDS = 'dockerhub'
     }
+    
     tools {
-    nodejs “nodejs20” // Jenkins configured nodejs
-    dockerTool ‘LocalDocker’ // Jenkins configured Docker. Note: Docker Build Pipeline MUST be installed.
-  }
+        nodejs 'nodejs20' // Jenkins configured nodejs
+        dockerTool 'LocalDocker' // Jenkins configured Docker. Note: Docker Build Pipeline MUST be installed.
+    }
     
     stages {
         stage('Clean up workspace') {
