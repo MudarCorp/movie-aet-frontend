@@ -1,7 +1,7 @@
 pipeline {
     agent any
     
-       environment {
+    environment {
         DOCKERHUB_USERNAME = "mudashir"
         APP_NAME = "movies-aet-frontend"
         IMAGE_TAG = "${BUILD_NUMBER}"
@@ -9,7 +9,7 @@ pipeline {
         REGISTRY_CREDS = 'dockerhub'
     }
     
-        stages {
+    stages {
         stage('Clean up workspace') {
             steps {
                 cleanWs()
@@ -24,12 +24,8 @@ pipeline {
         stage('Build App') {
             steps {
                 script {
-                    // Change directory to your Node.js application's directory
-                    dir('./') {
-                        // Install dependencies and build the application
-                        sh 'npm install'
-                        sh 'npm run build'  // or any build command you use in your project
-                    }
+                    sh 'npm install'
+                    sh 'npm run build'  // or any build command you use in your project
                 }
             }
         }
@@ -45,16 +41,16 @@ pipeline {
         stage('Push Image') {
             steps {
                 script {
-                    docker.withRegistry('',REGISTRY_CREDS){
-                        docker_image.push("$BUILD_NUMBER")
+                    docker.withRegistry('', REGISTRY_CREDS) {
+                        docker_image.push("${BUILD_NUMBER}")
                         docker_image.push('latest')
                     }
                 }
             } 
         }
         
-        stage('Remove Images'){
-            steps{
+        stage('Remove Images') {
+            steps {
                 sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
                 sh "docker rmi ${IMAGE_NAME}:latest"
             }
