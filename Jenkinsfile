@@ -9,6 +9,10 @@ pipeline {
         REGISTRY_CREDS = 'dockerhub'
     }
     
+    tools {
+        nodejs 'nodejs20' // Assuming 'nodejs20' is the name of your Node.js tool installation in Jenkins
+    }
+
     stages {
         stage('Clean up workspace') {
             steps {
@@ -24,11 +28,10 @@ pipeline {
         stage('Build App') {
             steps {
                 script {
-                    // Cleanup node_modules directory
-                    sh 'rm -rf node_modules'
-                    
-                    // Install dependencies and build the application
+                    // Install Node.js dependencies
                     sh 'npm install'
+                    
+                    // Build the application
                     sh 'npm run build'  // or any build command you use in your project
                 }
             }
