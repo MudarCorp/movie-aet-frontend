@@ -9,11 +9,6 @@ pipeline {
         REGISTRY_CREDS = 'dockerhub'
     }
     
-    tools {
-        node 'node' // Jenkins configured nodejs
-
-    }
-    
     stages {
         stage('Clean up workspace') {
             steps {
@@ -29,8 +24,15 @@ pipeline {
         stage('Build App') {
             steps {
                 script {
-                    sh 'npm install'
-                    sh 'npm run build'  // or any build command you use in your project
+                    // Change directory to your Node.js application's directory
+                    dir('./') {
+                        // Cleanup node_modules directory
+                        sh 'rm -rf node_modules'
+                        
+                        // Install dependencies and build the application
+                        sh 'npm install'
+                        sh 'npm run build'  // or any build command you use in your project
+                    }
                 }
             }
         }
@@ -47,15 +49,15 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', REGISTRY_CREDS) {
-                        docker_image.push("${BUILD_NUMBER}")
+                        docker_image.push("$BUILD_NUMBER")
                         docker_image.push('latest')
                     }
                 }
             } 
         }
         
-        stage('Remove Images') {
-            steps {
+        stage('Remove Images'){
+            steps{
                 sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
                 sh "docker rmi ${IMAGE_NAME}:latest"
             }
