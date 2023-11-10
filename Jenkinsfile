@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Install Node.js and npm
-                    def nodejsInstallation = tool name: 'NodeJS 14', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+                    def nodejsInstallation = tool name: 'NodeJS 20', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
                     env.PATH = "${nodejsInstallation}/bin:${env.PATH}"
                     // Install project dependencies
                     sh 'npm install'
