@@ -25,9 +25,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Install Node.js and npm
-                    def nodejsInstallation = tool name: 'NodeJS 20', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                    env.PATH = "${nodejsInstallation}/bin:${env.PATH}"
+                    // Download and install a pre-built Node.js binary compatible with the system's GLIBC
+                    sh 'curl -fsSL https://nodejs.org/dist/v14.17.6/node-v14.17.6-linux-x64.tar.xz | tar -xJ -C /opt/'
+                    env.PATH = "/opt/node-v14.17.6-linux-x64/bin:${env.PATH}"
+                    // Verify Node.js installation
+                    sh 'node -v'
                     // Install project dependencies
                     sh 'npm install'
                 }
