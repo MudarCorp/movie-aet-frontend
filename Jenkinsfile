@@ -25,8 +25,12 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Download and install a pre-built Node.js binary compatible with the system's GLIBC
-                    sh 'curl -fsSL https://nodejs.org/dist/v14.17.6/node-v14.17.6-linux-x64.tar.xz | tar -xJ -C /opt/'
+                    // Create a directory for Node.js installation
+                    dir('/opt') {
+                        // Download and install a pre-built Node.js binary compatible with the system's GLIBC
+                        sh 'curl -fsSL https://nodejs.org/dist/v14.17.6/node-v14.17.6-linux-x64.tar.xz | tar -xJ'
+                    }
+                    // Add Node.js binary directory to the PATH
                     env.PATH = "/opt/node-v14.17.6-linux-x64/bin:${env.PATH}"
                     // Verify Node.js installation
                     sh 'node -v'
