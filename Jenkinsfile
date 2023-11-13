@@ -17,23 +17,23 @@ pipeline {
                 cleanWs()
             }
         }
-        stage(‘Checkout SCM’) {
+        stage('Checkout SCM') {
             steps {
-                git credentialsId: ‘github’, url: ‘https://github.com/MudarCorp/movie-aet-frontend.git’, branch: ‘master’
+                git credentialsId: 'github', url: 'https://github.com/MudarCorp/movie-aet-frontend.git', branch: 'master'
             }
         }
-        stage(‘Build App’) {
+        stage('Build App') {
             steps {
                 script {
                     // Change directory to your Node.js application’s directory
-                    dir(‘./’) {
+                    dir('./') {
                         // Install dependencies and build the application
-                        sh ‘npm install’
+                        sh 'npm install'
                     }
                 }
             }
         }
-        stage(‘Build Image’) {
+        stage('Build Image') {
             steps {
                 script {
                     docker_image = docker.build(“${IMAGE_NAME}:${IMAGE_TAG}“)
