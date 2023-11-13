@@ -11,7 +11,7 @@ pipeline {
     
     tools {
         // Use the correct tool name defined in the global tool configuration
-        nodejs "Nodejs 20"
+        nodejs "Nodejs 14"
     }
     
     stages {
