@@ -12,7 +12,7 @@ pipeline {
         Nodejs 20 “Nodejs 20” //name in “” should be similar to name used for installer in the global tool configuration.
     }
     stages {
-        stage(‘Clean up workspace’) {
+        stage('Clean up workspace') {
             steps {
                 cleanWs()
             }
