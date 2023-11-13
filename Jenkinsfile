@@ -8,20 +8,25 @@ pipeline {
         IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}"
         REGISTRY_CREDS = 'dockerhub'
     }
+    
     tools {
-        Nodejs 20 “Nodejs 20” //name in “” should be similar to name used for installer in the global tool configuration.
+        // Use the correct tool name defined in the global tool configuration
+        nodejs "Nodejs 20"
     }
+    
     stages {
         stage('Clean up workspace') {
             steps {
                 cleanWs()
             }
         }
+        
         stage('Checkout SCM') {
             steps {
                 git credentialsId: 'github', url: 'https://github.com/MudarCorp/movie-aet-frontend.git', branch: 'master'
             }
         }
+        
         stage('Build App') {
             steps {
                 script {
@@ -33,6 +38,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Build Image') {
             steps {
                 script {
@@ -45,11 +51,11 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', REGISTRY_CREDS) {
-                        docker_image.push("${BUILD_NUMBER}")
+                        docker_image.push("${IMAGE_TAG}")
                         docker_image.push('latest')
                     }
                 }
-            } 
+            }
         }
 
         stage('Remove Images') {
